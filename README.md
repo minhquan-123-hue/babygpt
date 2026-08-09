@@ -1,0 +1,2 @@
+# babygpt
+study llm
