@@ -14,17 +14,23 @@ SAMPLES = SAMPLE_RATE * SECONDS
 class AudioDecoder(nn.Module):
     def __init__(self, latent=32):
         super().__init__()
+        # Generate a short sequence first, then upsample it to 24,000 samples.
+        # This keeps the model small enough to run locally.
+        self.seed = nn.Linear(latent, 64 * 125)
         self.net = nn.Sequential(
-            nn.Linear(latent, 256),
+            nn.ConvTranspose1d(64, 48, 8, stride=4, padding=2),
             nn.GELU(),
-            nn.Linear(256, 1024),
+            nn.ConvTranspose1d(48, 32, 8, stride=4, padding=2),
             nn.GELU(),
-            nn.Linear(1024, SAMPLES),
+            nn.ConvTranspose1d(32, 16, 8, stride=4, padding=2),
+            nn.GELU(),
+            nn.Conv1d(16, 1, 7, padding=3),
             nn.Tanh(),
         )
 
     def forward(self, z):
-        return self.net(z)
+        x = self.seed(z).view(-1, 64, 125)
+        return self.net(x).squeeze(1)
 
 def make_training_set(count=32):
     t = torch.linspace(0, SECONDS, SAMPLES)
@@ -48,7 +54,7 @@ class AudioGenerator:
         optimizer = torch.optim.Adam(self.model.parameters(), lr=2e-3)
 
         self.model.train()
-        for _ in range(40):
+        for _ in range(30):
             prediction = self.model(z)
             loss = ((prediction - data) ** 2).mean()
             optimizer.zero_grad()
