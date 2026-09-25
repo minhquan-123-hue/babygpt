@@ -1,25 +1,58 @@
 # BabyGPT
 
-A small educational multimodal generative AI laboratory.
+BabyGPT is being rebuilt from the smallest neural-network ideas upward.
 
-## Current build
+## Learning path
 
-- Text: a tiny GPT-style causal Transformer trained on data/data.txt, generating up to 200 words.
-- Image: a real neural decoder generating a 32x32 RGB image from a latent vector.
-- Audio: a real neural decoder generating a 3-second 8 kHz waveform.
-- UI: visualizes text as a neural network, audio as integer amplitudes, and image as a 32x32 integer grid.
+```
+Neuron
+  ↓
+Many neurons
+  ↓
+Layer
+  ↓
+Network
+  ↓
+Prediction
+  ↓
+Loss
+  ↓
+Learning
+  ↓
+Token prediction
+  ↓
+Embedding
+  ↓
+Attention
+  ↓
+Transformer
+  ↓
+Tiny GPT
+```
 
-The UI is theatrical, but the backend is not. Generated artifacts come from PyTorch models.
+Each new component should appear because it solves a problem from the previous step.
 
-## Run
+## Current step: 01 Neuron
 
-    pip install -r requirements.txt
-    python app.py
+```
+output = input × weight + bias
+```
 
-Then open http://127.0.0.1:5000.
+The implementation uses plain Python only. No PyTorch, NumPy, TensorFlow, or web UI is needed at this stage.
 
-## Limitation
+## Original experiments
 
-This is a learning system, not a competitive foundation model. The image and audio generators use tiny synthetic datasets so their architecture and generation process remain understandable and runnable on a laptop.
+The repository keeps the first tiny word-prediction experiment as reference:
 
-The next stage should improve training persistence, conditioning, datasets, evaluation, and model architecture rather than replacing the backend with external generation APIs.
+- `tokenizer.py`
+- `model.py`
+- `train.py`
+- `test_model.py`
+- `test_tokenizer.py`
+- `data/data.txt`
+
+The previous multimodal prototype is no longer the learning path. We will rebuild it deliberately from fundamentals instead of jumping directly to a Transformer.
+
+## Principle
+
+If a component is too complicated to explain with a few concrete numbers, simplify it before moving on.
