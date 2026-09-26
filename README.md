@@ -32,30 +32,44 @@ Tiny GPT
 
 Each new component should appear because it solves a problem from the previous step.
 
-## Current step: 02 Many neurons
+## Current step: 03 Layer
 
-One neuron gives us one output.
-
-The next problem is:
+Step 02 had:
 
 ```
-What if we need several outputs from the same input?
+one input
+   ↓
+many neurons
+   ↓
+many outputs
 ```
 
-Step 02 solves this by using several independent neurons.
+But a real neuron also needs to accept **many inputs**.
 
-Each neuron has:
-- its own weight
-- its own bias
-- the same input
+For example:
 
-So the data flow is:
+```
+inputs = [2, 3]
+```
+
+One neuron can combine them:
+
+```
+2 × weight1 + 3 × weight2 + bias
+```
+
+Step 03 puts these ideas together:
 
 ```
                  ┌─ neuron 1 → output 1
-input ───────────┼─ neuron 2 → output 2
-                 └─ neuron 3 → output 3
+input 1 ─────────┼─ neuron 2 → output 2
+input 2 ─────────┼─ neuron 3 → output 3
+                 └────────────
 ```
+
+Every neuron receives the same inputs, but each neuron has its own weights and bias.
+
+So a **layer is simply many neurons processing the same input vector**.
 
 The implementation still uses plain Python only. No PyTorch, NumPy, TensorFlow, or web UI is needed.
 
