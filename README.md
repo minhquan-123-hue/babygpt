@@ -32,26 +32,51 @@ Tiny GPT
 
 Each new component should appear because it solves a problem from the previous step.
 
-## Current step: 01 Neuron
+## Current step: 02 Many neurons
+
+One neuron gives us one output.
+
+The next problem is:
 
 ```
-output = input × weight + bias
+What if we need several outputs from the same input?
 ```
 
-The implementation uses plain Python only. No PyTorch, NumPy, TensorFlow, or web UI is needed at this stage.
+Step 02 solves this by using several independent neurons.
 
-## Original experiments
+Each neuron has:
+- its own weight
+- its own bias
+- the same input
 
-The repository keeps the first tiny word-prediction experiment as reference:
+So the data flow is:
 
-- `tokenizer.py`
-- `model.py`
-- `train.py`
-- `test_model.py`
-- `test_tokenizer.py`
-- `data/data.txt`
+```
+                 ┌─ neuron 1 → output 1
+input ───────────┼─ neuron 2 → output 2
+                 └─ neuron 3 → output 3
+```
 
-The previous multimodal prototype is no longer the learning path. We will rebuild it deliberately from fundamentals instead of jumping directly to a Transformer.
+The implementation still uses plain Python only. No PyTorch, NumPy, TensorFlow, or web UI is needed.
+
+## Old experiment
+
+The first tiny word-prediction experiment is kept as reference in:
+
+```
+old_experiment/
+    tokenizer.py
+    model.py
+    train.py
+    test_model.py
+    test_tokenizer.py
+    data/
+        data.txt
+```
+
+This code is **not part of the current learning path**.
+
+Do not refactor it or add features to it unless we explicitly decide to revisit it. It is kept because it shows an earlier, simpler attempt at word prediction.
 
 ## Principle
 
