@@ -32,51 +32,47 @@ Tiny GPT
 
 Each new component should appear because it solves a problem from the previous step.
 
-## Current step: 04 Network
+## Current step: 05 Prediction
 
-Step 03 gave us one layer:
-
-```
-many inputs
-     ↓
-   layer
-     ↓
-many outputs
-```
-
-But one layer is still limited. We want to process the result again.
-
-A network connects multiple layers:
-
-```
-inputs
-  ↓
-layer 1
-  ↓
-layer 2
-  ↓
-outputs
-```
-
-The important idea is simple:
-
-**The output of one layer becomes the input of the next layer.**
+A network produces several output values, or **scores**.
 
 For example:
 
 ```
-[2, 3]
-   ↓
-Layer 1
-   ↓
-[output1, output2]
-   ↓
-Layer 2
-   ↓
-[output1, output2]
+outputs = [0.2, 1.5, 0.7]
 ```
 
-So a network is not a completely new kind of calculation. It is mainly a way to **connect layers together**.
+If the model must choose one answer, we need a simple rule:
+
+```
+prediction = output with the highest score
+```
+
+So here:
+
+```
+0.2   1.5   0.7
+      ↑
+    highest
+
+prediction = 1
+```
+
+The important idea is:
+
+**The network calculates scores. Prediction chooses the answer represented by the highest score.**
+
+At this step there is still no training and no learning. We are only separating two ideas:
+
+```
+Network
+  ↓
+calculate scores
+  ↓
+Prediction
+  ↓
+choose highest score
+```
 
 The implementation still uses plain Python only. No PyTorch, NumPy, TensorFlow, or web UI is needed.
 
