@@ -32,44 +32,51 @@ Tiny GPT
 
 Each new component should appear because it solves a problem from the previous step.
 
-## Current step: 03 Layer
+## Current step: 04 Network
 
-Step 02 had:
+Step 03 gave us one layer:
 
 ```
-one input
-   ↓
-many neurons
-   ↓
+many inputs
+     ↓
+   layer
+     ↓
 many outputs
 ```
 
-But a real neuron also needs to accept **many inputs**.
+But one layer is still limited. We want to process the result again.
+
+A network connects multiple layers:
+
+```
+inputs
+  ↓
+layer 1
+  ↓
+layer 2
+  ↓
+outputs
+```
+
+The important idea is simple:
+
+**The output of one layer becomes the input of the next layer.**
 
 For example:
 
 ```
-inputs = [2, 3]
+[2, 3]
+   ↓
+Layer 1
+   ↓
+[output1, output2]
+   ↓
+Layer 2
+   ↓
+[output1, output2]
 ```
 
-One neuron can combine them:
-
-```
-2 × weight1 + 3 × weight2 + bias
-```
-
-Step 03 puts these ideas together:
-
-```
-                 ┌─ neuron 1 → output 1
-input 1 ─────────┼─ neuron 2 → output 2
-input 2 ─────────┼─ neuron 3 → output 3
-                 └────────────
-```
-
-Every neuron receives the same inputs, but each neuron has its own weights and bias.
-
-So a **layer is simply many neurons processing the same input vector**.
+So a network is not a completely new kind of calculation. It is mainly a way to **connect layers together**.
 
 The implementation still uses plain Python only. No PyTorch, NumPy, TensorFlow, or web UI is needed.
 
