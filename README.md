@@ -23,6 +23,8 @@ Token → Number
   ↓
 Word Prediction
   ↓
+Context → Token
+  ↓
 Embedding
   ↓
 Attention
@@ -34,7 +36,7 @@ Tiny GPT
 
 Each new component should appear because it solves a problem from the previous step.
 
-## Current steps: 08 Token → Number and 09 Word Prediction
+## Current steps: 08 Token → Number, 09 Word Prediction, and 10 Context → Token
 
 ### 08 Token → Number
 
@@ -105,6 +107,41 @@ word
 ```
 
 This is still deliberately simple. Later, we will replace the simple score table with a neural network that learns these scores.
+
+### 10 Context → Token
+
+Step 09 used only one token as input.
+
+But the next word can depend on the words before it:
+
+```
+"tôi ăn"   → "cơm"
+"tôi uống" → "nước"
+```
+
+Step 10 gives the predictor two previous tokens as context:
+
+```
+context
+   ↓
+scores for possible next tokens
+   ↓
+highest score
+   ↓
+next token
+```
+
+The first version is still a simple score table. We are deliberately not adding attention yet.
+
+The important new connection is:
+
+```
+one token → next token
+        ↓
+context → next token
+```
+
+This prepares the problem that attention will eventually solve: deciding which parts of a larger context matter for the next prediction.
 
 ## Old experiment
 
