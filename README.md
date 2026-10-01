@@ -198,6 +198,58 @@ Embedding solves a different problem from context.
 - **Context** tells us which previous tokens are available.
 - **Embedding** gives each token a useful numerical representation.
 
+### 12 Attention
+
+Step 11 gave each token a vector.
+
+Now we need a way for one token to look at the other tokens in its context.
+
+For example, when looking at `"cơm"` in:
+
+```
+"tôi ăn cơm"
+```
+
+not every token needs to be equally important.
+
+Attention compares the current token with the tokens around it:
+
+```
+current token
+     ↓
+compare with context
+     ↓
+attention scores
+     ↓
+attention weights
+     ↓
+weighted context information
+```
+
+In this first implementation, similarity is measured with a dot product:
+
+```
+similarity = query · key
+```
+
+We then use the scores to make a weighted combination of the context vectors.
+
+To keep the idea simple, this version uses the same embedding vector as query, key, and value. It does not use softmax, learned Q/K/V matrices, or multiple heads yet.
+
+The important new connection is:
+
+```
+token
+  ↓
+embedding
+  ↓
+look at context
+  ↓
+weighted information
+```
+
+This is the core problem that attention solves.
+
 ## Old experiment
 
 The first tiny word-prediction experiment is kept as reference in:
