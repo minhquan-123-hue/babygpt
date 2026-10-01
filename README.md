@@ -36,7 +36,7 @@ Tiny GPT
 
 Each new component should appear because it solves a problem from the previous step.
 
-## Current steps: 08 Token → Number, 09 Word Prediction, and 10 Context → Token
+## Current steps: 08 Token → Number, 09 Word Prediction, 10 Context → Token, and 11 Embedding
 
 ### 08 Token → Number
 
@@ -142,6 +142,61 @@ context → next token
 ```
 
 This prepares the problem that attention will eventually solve: deciding which parts of a larger context matter for the next prediction.
+
+### 11 Embedding
+
+Step 08 gave every word an integer ID.
+
+But these IDs are only labels:
+
+```
+"tôi" → 0
+"ăn"  → 1
+"cơm" → 2
+```
+
+The number `1` does not contain useful meaning about the word `"ăn"`.
+
+We need a representation that contains several numbers:
+
+```
+"tôi" → [0.2, 0.8]
+"ăn"  → [0.7, 0.1]
+"cơm" → [0.6, 0.3]
+```
+
+This is an **embedding**.
+
+The model can now work with a small vector instead of an arbitrary token ID:
+
+```
+token ID
+   ↓
+embedding lookup
+   ↓
+vector
+```
+
+For this first step, the vectors are just a small lookup table. They are not learned yet.
+
+Later, learning will adjust these numbers from data so that the vectors become useful representations.
+
+The important connection is:
+
+```
+word
+  ↓
+token ID
+  ↓
+vector
+  ↓
+neural network
+```
+
+Embedding solves a different problem from context.
+
+- **Context** tells us which previous tokens are available.
+- **Embedding** gives each token a useful numerical representation.
 
 ## Old experiment
 
