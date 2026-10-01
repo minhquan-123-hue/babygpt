@@ -43,11 +43,12 @@ class ContextPredictor:
     def __init__(self, vocab_size):
         # Store scores for each two-token context.
         self.scores = {}
+        self.vocab_size = vocab_size
 
     def learn(self, context, next_token):
         # Create a score row when we see a new context.
         if context not in self.scores:
-            self.scores[context] = [0 for _ in range(vocab_size)]
+            self.scores[context] = [0 for _ in range(self.vocab_size)]
 
         # Increase the score of the correct next token.
         self.scores[context][next_token] += 1
