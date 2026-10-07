@@ -1,45 +1,39 @@
-"""BabyGPT Step 12: Attention.
+"""BabyGPT Step 12: Attention v2.
 
-Step 10 showed that context matters.
-Step 11 gave each token a vector.
+Step 12 v1 let one token look at the whole context.
 
-Now we combine those ideas.
+But attention is more useful when every token does this.
 
-A token should not always treat every other token
-in the context as equally important.
-
-Example:
+For example:
 
     "tôi ăn cơm"
 
-When we are trying to understand "cơm",
-"ăn" may be more relevant than "tôi".
+Instead of creating one representation for only "cơm":
 
-Attention gives the current token a way to
-look at the other tokens and assign importance.
+    "tôi" -> context representation
+    "ăn"  -> context representation
+    "cơm" -> context representation
 
-For this first step, we use simple similarity:
+Each token looks at all tokens, decides how relevant
+they are, and creates its own context representation.
 
-    similarity = query · key
+We still keep the mechanism simple:
 
-Then:
-
-    attention score
+    token vector
         ↓
-    higher score = more relevant
+    compare with every token vector
         ↓
-    weighted combination of value vectors
+    scores
+        ↓
+    weights
+        ↓
+    weighted sum
+        ↓
+    context representation
 
-We use the same vector as query, key, and value
-to keep the idea visible.
-
-This is NOT the full Transformer attention yet.
-There is no softmax, no learned Q/K/V matrices,
-and no multi-head attention.
-
-The important new idea is:
-
-    token -> look at context -> weighted information
+This is still simplified attention.
+We use the same vector as query, key, and value.
+There is no softmax, learned Q/K/V, or multi-head attention yet.
 """
 
 
@@ -72,26 +66,25 @@ class Embedding:
 
 
 def dot(a, b):
-    # Dot product gives a simple measure of how similar
-    # two vectors are in this tiny example.
+    # Compare two vectors with a dot product.
     return sum(x * y for x, y in zip(a, b))
 
 
-def attention(context, current_index, embedding):
+def attention_for_token(context, current_index, embedding):
     current = embedding.get(context[current_index])
 
     scores = []
 
-    # Compare the current token with every token in the context.
+    # This token looks at every token in the context.
     for token in context:
         vector = embedding.get(token)
         scores.append(dot(current, vector))
 
-    # Convert scores into simple weights.
+    # Turn scores into simple weights.
     total = sum(scores)
     weights = [score / total for score in scores]
 
-    # Combine the context vectors using those weights.
+    # Gather information from the whole context.
     result = [0 for _ in current]
 
     for weight, token in zip(weights, context):
@@ -103,16 +96,39 @@ def attention(context, current_index, embedding):
     return scores, weights, result
 
 
+def attention(context, embedding):
+    # Every token creates its own context representation.
+    representations = []
+
+    for current_index in range(len(context)):
+        scores, weights, result = attention_for_token(
+            context,
+            current_index,
+            embedding,
+        )
+
+        representations.append({
+            "scores": scores,
+            "weights": weights,
+            "representation": result,
+        })
+
+    return representations
+
+
 embedding = Embedding()
 
 text = "tôi ăn cơm"
 tokens = encode(text)
 
-current_index = 2
-scores, weights, result = attention(tokens, current_index, embedding)
+results = attention(tokens, embedding)
 
-print("context :", text)
-print("looking :", "cơm")
-print("scores  :", [round(score, 3) for score in scores])
-print("weights :", [round(weight, 3) for weight in weights])
-print("result  :", [round(value, 3) for value in result])
+print("context:", text)
+print()
+
+for i, result in enumerate(results):
+    print("token", i)
+    print("scores :", [round(score, 3) for score in result["scores"]])
+    print("weights:", [round(weight, 3) for weight in result["weights"]])
+    print("result :", [round(value, 3) for value in result["representation"]])
+    print()
