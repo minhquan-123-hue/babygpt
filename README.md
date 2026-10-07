@@ -250,6 +250,60 @@ weighted information
 
 This is the core problem that attention solves.
 
+### 12 Attention v2
+
+Attention v1 let one selected token look at the context.
+
+Attention v2 extends that idea to every token.
+
+For:
+
+```
+"tôi ăn cơm"
+```
+
+we now create three context representations:
+
+```
+"tôi" → looks at the context → representation
+"ăn"  → looks at the context → representation
+"cơm" → looks at the context → representation
+```
+
+Each token follows the same process:
+
+```
+token vector
+    ↓
+compare with every context vector
+    ↓
+attention scores
+    ↓
+attention weights
+    ↓
+weighted sum
+    ↓
+that token's context representation
+```
+
+So attention is no longer:
+
+```
+context → one selected representation
+```
+
+It becomes:
+
+```
+context
+  ↓
+every token looks at the context
+  ↓
+one context representation per token
+```
+
+This is still simplified attention. The same embedding vector is used as query, key, and value. Softmax, learned Q/K/V projections, and multi-head attention come later.
+
 ## Old experiment
 
 The first tiny word-prediction experiment is kept as reference in:
