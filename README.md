@@ -304,6 +304,38 @@ one context representation per token
 
 This is still simplified attention. The same embedding vector is used as query, key, and value. Softmax, learned Q/K/V projections, and multi-head attention come later.
 
+### 12 Attention v3
+
+Attention v3 takes a sequence of embedding vectors directly and returns one new context-aware vector for each token.
+
+Example input:
+
+```
+[
+    [0.2, 0.8],  # tôi
+    [0.7, 0.1],  # ăn
+    [0.6, 0.3],  # cơm
+]
+```
+
+Each input vector attends to all vectors, then combines them using its own weights. The output has the same number of vectors as the input.
+
+Run the example:
+
+```bash
+python 12_attention_v3.py
+```
+
+Run the test:
+
+```bash
+python -m unittest test_attention_v3.py
+```
+
+The test checks that every input token gets a separate output vector, that the vector dimensions are preserved, and that the example tokens receive different context representations.
+
+This is still the project's simple attention mechanism: dot-product scores and simple normalization. It does not add softmax or learned Q/K/V projections.
+
 ## Old experiment
 
 The first tiny word-prediction experiment is kept as reference in:
