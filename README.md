@@ -336,6 +336,31 @@ The test checks that every input token gets a separate output vector, that the v
 
 This is still the project's simple attention mechanism: dot-product scores and simple normalization. It does not add softmax or learned Q/K/V projections.
 
+
+### 12 Attention v4: Learnable scoring
+
+In v3, the score was a fixed dot product. In v4, a tiny set of parameters controls how much each vector dimension contributes to the score:
+
+```
+score(a, b) = p0 × a0 × b0 + p1 × a1 × b1
+```
+
+For two-dimensional vectors, the model has just two scoring parameters, such as `[1.0, 1.0]`. Changing them changes the scores, which changes the attention weights and context representations. This demonstrates what makes the scoring component learnable: its behavior can be adjusted by changing parameters. This step does not train them automatically yet.
+
+Run the example:
+
+```bash
+python 12_attention_v4.py
+```
+
+Run the test:
+
+```bash
+python -m unittest test_attention_v4.py
+```
+
+The example prints results with the initial parameters and with changed parameters so you can compare the weights and context vectors directly. It keeps v3's simple normalization and does not add softmax, Q/K/V projections, Transformer blocks, or multi-head attention.
+
 ## Old experiment
 
 The first tiny word-prediction experiment is kept as reference in:
