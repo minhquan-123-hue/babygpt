@@ -101,4 +101,4 @@ class Value:
         return other * self**-1
 
     def __repr__(self):
-        return f"Value(data={self.data}, grad={self.grad}, label={self._label})"
+        return f"Value(data={self.data}, grad={self.grad})"
