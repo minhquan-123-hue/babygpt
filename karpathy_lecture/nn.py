@@ -60,7 +60,7 @@ print(ypred)
 
 print()
 loss = sum([(yout - ygt)**2 for yout, ygt in zip(ypred, ys)])
-
+print(loss)
 
 loss.backward()
 
