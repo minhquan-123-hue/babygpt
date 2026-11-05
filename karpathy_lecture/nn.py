@@ -44,26 +44,27 @@ class MLP:
     
 
 
-n = MLP(3,[4,4,1])
+if __name__ == "__main__":
+    n = MLP(3, [4, 4, 1])
 
-xs = [
-    (2.0, 3.0, -1.0),
-    (3.0, -1.0, 0.5),
-    (0.5, 1.0, 1.0),
-    (1.0, 1.0, -1.0)
-]
+    xs = [
+        (2.0, 3.0, -1.0),
+        (3.0, -1.0, 0.5),
+        (0.5, 1.0, 1.0),
+        (1.0, 1.0, -1.0),
+    ]
 
-ys = [1.0, -1.0, -1.0, 1.0] # desired targets
-ypred = [n(x) for x in xs]
+    ys = [1.0, -1.0, -1.0, 1.0]
+    ypred = [n(x) for x in xs]
 
-print(ypred)
+    print(ypred)
 
-print()
-loss = sum([(yout - ygt)**2 for yout, ygt in zip(ypred, ys)])
-print(loss)
+    print()
+    loss = sum((yout - ygt) ** 2 for yout, ygt in zip(ypred, ys))
+    print(loss)
 
-loss.backward()
+    loss.backward()
 
-print(len(n.parameters()))
+    print(len(n.parameters()))
 
-print(n.layers[0].neurons[0].w[0].grad)
+    print(n.layers[0].neurons[0].w[0].grad)

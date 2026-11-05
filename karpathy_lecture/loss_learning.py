@@ -1,3 +1,5 @@
+"""small operation to illustrate how backpropagation works"""
+
 n1 = -2
 n1_grad = 2
 
@@ -20,6 +22,7 @@ loss = (output - target) ** 2 # ket qua se la 2 va duoc truyen dao ve cho n5
 loss_grad = 2 * (output - target) 
 
 for i in range(20):
+    # backpropagate 
     n5_grad = loss_grad
     n4_grad = n5_grad * 1
     n3_grad = n5_grad * 1
