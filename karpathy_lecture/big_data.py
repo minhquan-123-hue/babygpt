@@ -1,67 +1,34 @@
-""" chứng minh rằng không quan tâm bao nhiêu outputs , chỉ cần sum lại và sau đó dựa vào Loss tổng và cập nhật params , output sẽ tự được điều chỉnh theo hướng giảm loss """
+inputs = [1.0, 2.0]
+targets = [-2.0, 3.0]
 
-from nn import MLP
+weight = -2.0
+# weight_grad = 1.0 * output1_grad + 1.0 * output2_grad
+bias = 1.6
+# bias_grad = 1.0 * final_output1_grad + 1.0 * final_output2_grad
 
-# mạng lưới neuron vẫn giữ nguyên như bài giảng 
-mlp = MLP(3, [4, 4, 1])
 
-# bộ data set lớn 
-large_data_set = [
-    (-1.0, 2.0, 3.2),
-    (0.7, -1.4, 2.8),
-    (3.1, 0.2, -0.9),
-    (-2.6, 1.8, 0.5),
-    (1.3, -3.2, 2.1),
-    (0.4, 2.7, -1.6),
-    (-0.8, 3.5, 1.2),
-    (2.4, -0.3, -2.1),
-    (-1.7, 0.9, 3.6),
-    (3.3, -2.5, 0.6),
-]
+output1 = inputs[0] * weight
+# output1_grad = 1.0 * final_output1_grad
 
-# mục tiêu ngẫu nhiên cho mỗi input trong bộ data set lớn
-targets = [
-    0.42,
-    -1.73,
-    2.16,
-    0.85,
-    -0.39,
-    1.64,
-    -2.08,
-    0.27,
-    1.31,
-    -0.96,
-]
+output2 = inputs[1] * weight
+# output2_grad = 1.0 * final_output2_grad
 
-learning_rate = 0.01
-epochs = 1000
+final_output1 = output1 + bias
+# final_output1_grad = 2(final_output1 - targets[0]) * loss1_grad
+final_output2 = output2 + bias
+# final_output2_grad = 2(final_output2 - targets[1]) * loss2_grad
 
-for epoch in range(epochs):
-    parameters = mlp.parameters()
-    for parameter in parameters:
-        parameter.grad = 0
+loss1 = (final_output1 - targets[0]) ** 2
+# loss1_grad = 1.0 * tt_loss_grad 
+loss2 = (final_output2 - targets[1]) ** 2
+# loss2_grad = 1.0 * tt_loss_grad 
 
-    # forward pass
-    # each predition is computed for each input in the large data set
-    # put it in a list and then sum the loss for all predictions
-    predictions = [mlp(inputs) for inputs in large_data_set]
-    loss = sum(
-        (prediction - target) ** 2
-        for prediction, target in zip(predictions, targets)
-    )
-    loss.backward()
+total_loss = loss1 + loss2
+# tt_loss_grad = 1.0 
 
-    for parameter in parameters:
-        parameter.data -= learning_rate * parameter.grad
+learning_rate = 0.1
 
-    outputs = [mlp(inputs) for inputs in large_data_set]
-    total_loss = sum(
-        (output - target) ** 2
-        for output, target in zip(outputs, targets)
-    )
-
-    print(f"Vong {epoch + 1}/{epochs}")
-    print("Parameters:", [round(parameter.data, 4) for parameter in parameters])
-    print("Outputs:", [round(output.data, 4) for output in outputs])
-    print(f"Total loss: {total_loss.data:.6f}\n")
-
+# sau nhieu lan hoc
+# cac phan weight se duoc cap nhat theo cong thuc: para.data += -learning_rate * param.grad
+# cung voi input duoc dua vao thi weight va bias van se giu nguyen
+# va output van se tinh toan gan dat den muc theo mong muon
