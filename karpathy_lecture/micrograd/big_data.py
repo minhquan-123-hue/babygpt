@@ -1,6 +1,11 @@
+"""
+tìm câu trả lời cho việc weight sẽ thay đổi với từng input , hay giữ nguyên với tất cả và vẫn tạo ra output mong muốn
+"""
 inputs = [1.0, 2.0]
-targets = [-2.0, 3.0]
+targets = [-2.0, 3.0] 
 
+
+""" có duy nhất 2 params cần thay đổi để đạt output mong muốn """
 weight = -2.0
 # weight_grad = 1.0 * output1_grad + 1.0 * output2_grad
 bias = 1.6

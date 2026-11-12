@@ -1,4 +1,4 @@
-from micrograd import Value
+from karpathy_lecture.micrograd.engine import Value
 import random
 
 class Neuron:
